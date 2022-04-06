@@ -20,6 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns #!
 from django.contrib.staticfiles.urls import static #!
 
 urlpatterns = [
+    path('taansen/accounts/', include('django.contrib.auth.urls')), # for sign in sign up page
     path('taansen/', include('taansen.urls')),
     path('admin/', admin.site.urls),
 ]

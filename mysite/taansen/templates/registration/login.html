@@ -1,0 +1,15 @@
+<!-- ! Taken from https://learndjango.com/tutorials/django-login-and-logout-tutorial -->
+<!-- templates/registration/login.html -->
+<!-- templates/registration/login.html -->
+{% extends '../taansen/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h2>Log In</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Log In</button>
+</form>
+{% endblock %}
