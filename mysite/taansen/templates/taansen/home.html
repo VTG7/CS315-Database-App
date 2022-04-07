@@ -1,4 +1,12 @@
 <!-- templates/home.html -->
+<style>
+  body {
+    background-image: url('https://d3d343oddxxyuu.cloudfront.net/images/chapters/iEvf14FAMEDA6oH7e0l1Nqy369vCgwBvX4dPK5mD.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
+</style>
 {% extends 'taansen/base.html' %}
 
 {% block title %}Home{% endblock %}
@@ -6,6 +14,11 @@
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
+  <form action="/taansen/home" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
   <p>You are not logged in</p>

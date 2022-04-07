@@ -6,6 +6,6 @@ from .views import SignUpView
 app_name = 'taansen'
 urlpatterns = [
     path('signup', SignUpView.as_view(), name='signup'),
-    path('home', TemplateView.as_view(template_name='taansen/home.html'),name='home'),   
+    path('home', views.homeView, name='home'),   
     path('', views.index, name = 'index'),
     ]
