@@ -31,7 +31,10 @@
        </div>
        <div class="titre">
         <h3>
-         {{item.artist}}
+          {% for artist in item.artist.all%}  
+          <!-- ! No comma or any other separator added as of now -->
+            {{artist}}
+          {% endfor %}
         </h3>
         <h1>
          {{item.title}}

@@ -15,10 +15,17 @@ from . forms import searchForm
 from django.db.models import Q
 
 def index(request): #!
-    paginator = Paginator(Song.objects.all(),1)
+    paginator = Paginator(Song.objects.filter(title__contains='title'),1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "taansen/index.html", {"page_obj":page_obj})
+
+def playSong(request, title):
+    paginator = Paginator(Song.objects.filter(title__contains=title),1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "taansen/index.html", {"page_obj":page_obj})
+    
 
 class SignUpView(generic.CreateView):   # For Signup Page
     form_class = UserCreationForm
@@ -33,6 +40,7 @@ def homeView(request):  # For home page, after login
             # rn, just putting a dummy link
             song = form.cleaned_data['query']
             #return HttpResponseRedirect('/taansen/accounts/signup')
+        
             object_list = Song.objects.filter(title__contains=song) #! the query to get the songs containing 'song' in their title. Case insensitive matching done
             return render(request, 'taansen/search_results.html',{'object_list':object_list})
     else :

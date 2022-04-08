@@ -27,11 +27,12 @@ class Song(models.Model):
     # refer: https://docs.djangoproject.com/en/4.0/topics/db/models/#automatic-primary-key-fields
     title = models.TextField()
     genre = models.TextField()
+    lyrics = models.TextField(default="NA") #! might need to handle the case when someone searches for say 'NA' in the lyrics
     # !tags = {}
     # !path_to_lyrics = 
     image = models.ImageField() #!
     audio_file = models.FileField() #!
-    audio_link =  models.CharField(max_length=200) #!
+    #audio_link =  models.CharField(max_length=200) #!
     duration=models.CharField(max_length=20) #!
     paginate_by = 2 #!
     movie_album = models.ForeignKey(MovieAlbum, on_delete=models.CASCADE) #SongOf relation. One song can belong to one album, while one album may host many songs.

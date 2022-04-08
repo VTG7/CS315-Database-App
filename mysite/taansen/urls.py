@@ -7,5 +7,6 @@ app_name = 'taansen'
 urlpatterns = [
     path('signup', SignUpView.as_view(), name='signup'),
     path('home', views.homeView, name='home'),   
-    path('', views.index, name = 'index'),
+    path('', views.index, name = 'index'), #! will give a useless page for now on visiting /taansen/
+    path('<str:title>/', views.playSong, name = 'play song'),
     ]
