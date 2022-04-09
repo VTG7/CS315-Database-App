@@ -1,5 +1,6 @@
 # Create your views here.
 from email.policy import HTTP
+from pickle import NONE
 from re import template
 from django.shortcuts import get_object_or_404, render, redirect # !redirect added
 
@@ -36,12 +37,31 @@ def homeView(request):  # For home page, after login
     if request.method == 'POST':
         form = searchForm(request.POST)
         if form.is_valid():
-            # will do the query here
-            # rn, just putting a dummy link
-            song = form.cleaned_data['query']
-            #return HttpResponseRedirect('/taansen/accounts/signup')
-        
-            object_list = Song.objects.filter(title__contains=song) #! the query to get the songs containing 'song' in their title. Case insensitive matching done
+            title = form.cleaned_data['title']
+            title_selector = form.cleaned_data['Selector']
+            artist = form.cleaned_data['artist']
+            artist_selector = form.cleaned_data['Selector2']
+            actor = form.cleaned_data['actor']
+            actor_selector = form.cleaned_data['Selector3']
+            genre = form.cleaned_data['genre']
+            genre_selector = form.cleaned_data['Selector4']
+            lyrics = form.cleaned_data['lyrics']
+            #object_list = Song.objects.filter(Q())                    
+            #object_list = Song.objects.filter(lyrics__contains = lyrics).distinct() 
+            object_list = Song.objects.all() 
+            if title_selector=='choice2' :
+                object_list = object_list.exclude(title__contains = title)
+                title = ''             
+            if artist_selector=='choice2' :
+                object_list = object_list.exclude(artist__name__contains = artist)
+                artist = ''  
+            if actor_selector=='choice2' :
+                object_list = object_list.exclude(movie_album__actor__name__contains = actor) 
+                actor = '' 
+            if genre_selector=='choice2' :
+                object_list = object_list.exclude(genre__contains = genre)
+                genre = ''  
+            object_list = object_list.filter(title__contains=title , artist__name__contains=artist ,movie_album__actor__name__contains = actor,genre__contains = genre, lyrics__contains = lyrics).distinct() # query with all fields selected as 'with' and not null.
             return render(request, 'taansen/search_results.html',{'object_list':object_list})
     else :
         form = searchForm()
