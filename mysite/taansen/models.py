@@ -1,5 +1,7 @@
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 class Artist(models.Model):
     name = models.TextField()
@@ -41,9 +43,17 @@ class Song(models.Model):
     def __str__(self):
         return self.title
   
-class User(models.Model):
-    password = models.TextField()
-    username = models.TextField()
-    user_type = models.BooleanField() # added it as a boolean field. Choose the convention or just remove it - VSR
-    #! IMP: Liked songs and history(which will be a list of songs)
-    #! is left for now. Looks doable though
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    liked_songs = models.ManyToManyField(Song, related_name='liked_songs')
+    def __str__(self):
+        return self.user.username
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

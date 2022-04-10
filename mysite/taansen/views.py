@@ -11,7 +11,7 @@ from django.views import generic
 from django.template import loader
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator #!
-from . models import Song
+from . models import Song, Profile
 from . forms import searchForm
 from django.db.models import Q
 
@@ -67,5 +67,12 @@ def homeView(request):  # For home page, after login
         form = searchForm()
 
     return render(request, 'taansen/home.html', {'form':form})
+
+#! add @login required signal ??
+def likeView(request, pk):
+    song = get_object_or_404(Song, id = request.POST.get('song_id'))
+    user = Profile.objects.get(user=request.user)
+    user.liked_songs.add(song)
+    return HttpResponseRedirect(reverse('taansen:play_song', args=[str(song.title)]))
 
 

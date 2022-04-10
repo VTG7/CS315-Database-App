@@ -13,7 +13,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  Hi {{ user.username }} 
   <form action="/taansen/home" method="post">
     {% csrf_token %}
     {{ form }}
