@@ -253,3 +253,13 @@ h3 {
     background: #fff;
 }
 
+.card {
+    margin: 5px auto;
+    padding: 5px 5px;
+    box-shadow: 0 0 20px 0 ;
+}
+
+.frosted{
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+  }

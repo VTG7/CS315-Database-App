@@ -32,7 +32,6 @@
 
         <!-- ! the taansen:liked_songs was veryyy import -->
         <form action = "{% url 'taansen:liked_songs' item.pk %}" method = "POST"> 
-          {% csrf_token % }
           <button type="submit", name = "song_id", value = "{{item.id}}", class = "btn btn-primary btn-sm">
             Like
             </button>
