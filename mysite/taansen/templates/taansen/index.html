@@ -9,6 +9,7 @@
    My Music Player
   </title>
   <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+  <link href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
   <link href="{% static 'taansen/style.css' %}" rel="stylesheet"/>
  </head>
@@ -24,30 +25,53 @@
    <body>
     <div class="contain">
      <div class="container">
+    
       <div class="music-player">
+
         {% for item in page_obj %}
+
+        <!-- ! the taansen:liked_songs was veryyy import -->
+        <form action = "{% url 'taansen:liked_songs' item.pk %}" method = "POST"> 
+          {% csrf_token % }
+          <button type="submit", name = "song_id", value = "{{item.id}}", class = "btn btn-primary btn-sm">
+            Like
+            </button>
+          </form>
        <div class="cover">
         <img alt="" src="{{item.image.url}}"/>
        </div>
        <div class="titre">
+
         <h3>
-         {{item.artist}}
+    
+
+          {% for artist in item.artist.all%}  
+          <!-- ! No comma or any other separator added as of now -->
+            {{artist}}
+          {% endfor %}
         </h3>
+        
         <h1>
          {{item.title}}
         </h1>
+        <svg class="heart" viewBox="0 0 32 29.6">
+          <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+          c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+        </svg> 
+        
+
        </div>
        <center><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a> &nbsp; &nbsp; &nbsp; <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a></center>
        <div class="lecteur">
-        <audio class="fc-media" style="width: 100%;">
+        <audio autoplay class="fc-media" style="width: 100%;">
          <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
         </audio>
-
        </div>
        {% endfor %}
       </div>
      </div>
     </div>
+
    </body>
   </html>
   <!-- partial -->
@@ -59,7 +83,5 @@
   </script>
  </body>
 </html>
-
-
 
 

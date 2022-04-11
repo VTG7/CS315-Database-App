@@ -4,7 +4,17 @@
 <ul>
   {% for song in object_list %}
     <li>
-      {{ song.title }}, {{ song.genre }}
+
+      <a href="/taansen/{{song.title}} "> {{song.title}} </a> | Artists: 
+      {% for artist in song.artist.all%}
+      
+           {{artist}}
+        
+        {% endfor %} | Actors in the movie album: 
+    {% for actor in song.movie_album.actor.all%}
+            {{actor}}
+            {% endfor %}
+      <!-- ! song.artist giving taansen.Artist.None, to be sorted -->
     </li>
   {% endfor %}
 </ul>

@@ -9,6 +9,7 @@ body {
     margin: 0;
     font-family: "Raleway",sans-serif;
 }
+
 h1 {
     margin: 0;
     font-size: 33px;
@@ -22,6 +23,20 @@ h3 {
     color: #ccc;
     padding: 0 10%;
 }
+.heart {
+    fill: red;
+    position: absolute;
+    top: 300px;
+    left: 180px;
+    width: 50px;
+    animation: pulse 1s ease infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
 .container {
     display: block;
     width: 100%;
@@ -44,6 +59,7 @@ h3 {
     background: transparent linear-gradient(to bottom,rgba(10,11,31,0.9) 50%,rgb(10,11,31) 70%) repeat scroll 0 0;
     box-shadow: 1px 10px 20px 5px #222;
 }
+
 .cover {
     float: left;
     width: 100%;
@@ -236,3 +252,4 @@ h3 {
 .mejs__controls .mejs__horizontal-volume-slider .mejs__horizontal-volume-current {
     background: #fff;
 }
+
