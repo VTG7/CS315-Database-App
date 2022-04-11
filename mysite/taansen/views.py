@@ -14,6 +14,8 @@ from django.core.paginator import Paginator #!
 from . models import Song, Profile
 from . forms import searchForm
 from django.db.models import Q
+from itertools import chain
+from collections import OrderedDict
 
 def index(request): #!
     paginator = Paginator(Song.objects.filter(title__contains='title'),1)
@@ -22,7 +24,14 @@ def index(request): #!
     return render(request, "taansen/index.html", {"page_obj":page_obj})
 
 def playSong(request, title):
-    paginator = Paginator(Song.objects.filter(title__contains=title),1)
+    user = Profile.objects.get(user=request.user)
+    song_list2 = Song.objects.filter(title__exact=title)
+    song_list1 = user.liked_songs.all()
+    song_list = (song_list1 | song_list2)
+    result = list(chain(song_list2, song_list1))
+    result = list(OrderedDict.fromkeys(result))
+    #song_list = song_list1.union(song_list2)
+    paginator = Paginator(result,1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "taansen/index.html", {"page_obj":page_obj})
