@@ -1,0 +1,16 @@
+<!--templates/liked.html-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Liked Songs{% endblock %}</title>
+</head>
+<body>
+  <main>
+      <h1>You have liked the following songs:</h1>
+      {% for song in songs %}
+        <tr><song class="name"></song></tr>
+      {% endfor %}
+  </main>
+</body>
+</html>
