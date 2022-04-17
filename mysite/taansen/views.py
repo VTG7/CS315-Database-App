@@ -21,9 +21,9 @@ def index(request): #!
     paginator = Paginator(Song.objects.filter(title__contains='title'),1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, "taansen/index.html", {"page_obj":page_obj})
+    return render(request, "taansen/index_alt.html", {"page_obj":page_obj})
 
-def playSong(request, title):
+def playSong(request, title, liked):
     user = Profile.objects.get(user=request.user)
     song_list2 = Song.objects.filter(title__exact=title)
     song_list1 = user.liked_songs.all()
@@ -34,7 +34,7 @@ def playSong(request, title):
     paginator = Paginator(result,1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, "taansen/index.html", {"page_obj":page_obj})
+    return render(request, "taansen/index_alt.html", {"page_obj":page_obj, "liked":liked})
     
 
 class SignUpView(generic.CreateView):   # For Signup Page
@@ -58,6 +58,8 @@ def homeView(request):  # For home page, after login
             #object_list = Song.objects.filter(Q())                    
             #object_list = Song.objects.filter(lyrics__contains = lyrics).distinct() 
             object_list = Song.objects.all() 
+            user = Profile.objects.get(user=request.user)
+            liked_songs = user.liked_songs.all()
             if title_selector==True and title != '':
                 object_list = object_list.exclude(title__contains = title)
                 title = ''             
@@ -71,7 +73,7 @@ def homeView(request):  # For home page, after login
                 object_list = object_list.exclude(genre__contains = genre)
                 genre = ''  
             object_list = object_list.filter(title__contains=title , artist__name__contains=artist ,movie_album__actor__name__contains = actor,genre__contains = genre, lyrics__contains = lyrics).distinct() # query with all fields selected as 'with' and not null.
-            return render(request, 'taansen/search_results.html',{'object_list':object_list})
+            return render(request, 'taansen/search_results.html',{'object_list':object_list, 'liked_songs':liked_songs})
     else :
         form = searchForm()
 
@@ -81,7 +83,12 @@ def homeView(request):  # For home page, after login
 def likeView(request, pk):
     song = get_object_or_404(Song, id = request.POST.get('song_id'))
     user = Profile.objects.get(user=request.user)
-    user.liked_songs.add(song)
-    return HttpResponseRedirect(reverse('taansen:play_song', args=[str(song.title)]))
+    liked = 0
+    if song in user.liked_songs.all():
+        user.liked_songs.remove(song)
+    else:
+        user.liked_songs.add(song)
+        liked = 1
+    return HttpResponseRedirect(reverse('taansen:play_song', args=[str(song.title), liked]))
 
 
