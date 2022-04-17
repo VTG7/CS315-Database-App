@@ -58,16 +58,16 @@ def homeView(request):  # For home page, after login
             #object_list = Song.objects.filter(Q())                    
             #object_list = Song.objects.filter(lyrics__contains = lyrics).distinct() 
             object_list = Song.objects.all() 
-            if title_selector=='choice2' :
+            if title_selector==True and title != '':
                 object_list = object_list.exclude(title__contains = title)
                 title = ''             
-            if artist_selector=='choice2' :
+            if artist_selector==True and artist != '':
                 object_list = object_list.exclude(artist__name__contains = artist)
                 artist = ''  
-            if actor_selector=='choice2' :
+            if actor_selector==True and actor != '':
                 object_list = object_list.exclude(movie_album__actor__name__contains = actor) 
                 actor = '' 
-            if genre_selector=='choice2' :
+            if genre_selector==True and genre != '' :
                 object_list = object_list.exclude(genre__contains = genre)
                 genre = ''  
             object_list = object_list.filter(title__contains=title , artist__name__contains=artist ,movie_album__actor__name__contains = actor,genre__contains = genre, lyrics__contains = lyrics).distinct() # query with all fields selected as 'with' and not null.
