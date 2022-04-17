@@ -44,8 +44,7 @@
                     src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}"
                     type="audio/mp3" />
             </audio></center>
-            <iframe name="frame" style="display: none;"></iframe>
-        <form action="{% url 'taansen:liked_songs' item.pk %}" method="POST" target="frame">
+        <form action="{% url 'taansen:liked_songs' item.pk %}" method="POST" >
             <button type="submit" , name="song_id" , value="{{item.id}}" , class="btn btn-primary btn-sm">
                 {% if liked %}
                 Unlike

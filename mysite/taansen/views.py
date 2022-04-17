@@ -91,4 +91,9 @@ def likeView(request, pk):
         liked = 1
     return HttpResponseRedirect(reverse('taansen:play_song', args=[str(song.title), liked]))
 
+def likedPage(request) :
+    user = Profile.objects.get(user = request.user)
+    object_list = user.liked_songs.all()
+    return render(request, 'taansen/liked.html',{'object_list':object_list, 'liked_songs':object_list})
+
 
