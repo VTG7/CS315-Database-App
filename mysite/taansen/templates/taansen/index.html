@@ -34,7 +34,11 @@
         <iframe name="frame" style="display: none;"></iframe>
         <form action = "{% url 'taansen:liked_songs' item.pk %}" method = "POST" target="frame"> 
           <button type="submit", name = "song_id", value = "{{item.id}}", class = "btn btn-primary btn-sm">
+            {% if item in liked %}
+            Unlike
+            {% else %}
             Like
+            {% endif %}
             </button>
           </form>
        <div class="cover">
