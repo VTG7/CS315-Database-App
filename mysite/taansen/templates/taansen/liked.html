@@ -36,7 +36,7 @@
             {% for actor in song.movie_album.actor.all%}
                     {{actor}}
                     {% endfor %}</p>
-            <a href="/taansen/{{song.title}}&{% if song in liked_songs %}1{% else %}0{% endif %}" class="btn btn-primary">Play!</a>
+            <a href="/taansen/{{song.title}}" class="btn btn-primary">Play!</a>
           </div>
         </div> 
       </div>

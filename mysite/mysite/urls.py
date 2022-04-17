@@ -21,8 +21,8 @@ from django.contrib.staticfiles.urls import static #!
 
 urlpatterns = [
     path('taansen/accounts/', include('django.contrib.auth.urls')), # for log in log out page
-    path('taansen/accounts/', include('taansen.urls')), # for sign up page
     path('taansen/', include('taansen.urls')),
+    path('taansen/accounts/', include('taansen.urls')), # for sign up page
     path('admin/', admin.site.urls),
 ]
 

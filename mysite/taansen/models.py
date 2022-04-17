@@ -39,13 +39,18 @@ class Song(models.Model):
     paginate_by = 2 #!
     movie_album = models.ForeignKey(MovieAlbum, on_delete=models.CASCADE) #SongOf relation. One song can belong to one album, while one album may host many songs.
     artist = models.ManyToManyField(Artist) # SungBy relation. A many-many field.
-
+    
     def __str__(self):
         return self.title
-  
+
+#class History(models.Model):     # History of each user
+#    song_history = models.ManyToManyField(Song) #! on delete cascade is a syntax here
+#    time = models.DateTimeField(auto_now_add=True)  
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#    history = models.OneToOneField(History, on_delete=models.CASCADE)
     liked_songs = models.ManyToManyField(Song, related_name='liked_songs')
+    #history = models.OnetoOneField(History, related_name='song_history')
     def __str__(self):
         return self.user.username
 
@@ -57,3 +62,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+

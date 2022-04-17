@@ -62,9 +62,11 @@
           Your Liked Songs
           </button>
         </a>
-
-        <a class="btn btn-dark px-3" href="https://github.com/mdbootstrap/mdb-ui-kit" role="button"><i
-            class="fab fa-github"></i></a>
+        <a href="{% url 'taansen:likedPage' %}" <button type="button" class="btn btn-primary me-3">
+          Your Song History
+          </button>
+        </a>
+        
       </div>
     </div>
     <!-- Collapsible wrapper -->
@@ -74,7 +76,7 @@
 <!-- Navbar -->
 
 
-
+<iframe src="http://127.0.0.1:8000/taansen/spellcheck" style="display: none;"></iframe>
 
 
 <h3 class="text-white"> Hi <span class="text-primary">{{ user.username}}</span></h3>
