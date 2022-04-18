@@ -7,7 +7,7 @@ from email.policy import HTTP
 from pickle import NONE
 from re import template
 from django.shortcuts import get_object_or_404, render, redirect # !redirect added
-
+from datetime import datetime
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -15,7 +15,7 @@ from django.views import generic
 from django.template import loader
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator #!
-from . models import Song, Profile, Actor, Artist, MovieAlbum
+from . models import Song, Profile, Actor, Artist, MovieAlbum, Time
 from . forms import searchForm
 from django.db.models import Q
 from itertools import chain
@@ -46,6 +46,9 @@ def playSong(request, title):
     #history = list(OrderedDict.fromkeys(history))
     #for song in history:
     #    user.song_history.add(song)
+    Time.objects.filter(song=song_list2.first(), user = Profile.objects.get(user=request.user)).delete()
+    Time.objects.create(song=song_list2.first(), user = Profile.objects.get(user=request.user), timestamp = datetime.now())
+
     paginator = Paginator(result,1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -87,8 +90,9 @@ def homeView(request):  # For home page, after login
 
                     lyrics = form.cleaned_data['lyrics']
                     f_lyrics = fetcher(cursor, lyrics, 2)
+                    print(f_lyrics)
                     lyrics = lyrics if len(f_lyrics) == 0 or len(lyrics) == 0 else f_lyrics[0][0]
-
+                    print(lyrics)
                     object_list = Song.objects.all() 
                     user = Profile.objects.get(user=request.user)
                     liked_songs = user.liked_songs.all()  
@@ -130,7 +134,8 @@ def likedPage(request) :
 
 def songHistory(request) :
     user = Profile.objects.get(user = request.user)
-    object_list = user.song_history.all().order_by()
+    
+    object_list = user.history.all().order_by("-time__timestamp")
     return render(request, 'taansen/history.html', {'object_list':object_list})
 
 x = 1

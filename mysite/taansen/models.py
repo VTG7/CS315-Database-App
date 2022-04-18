@@ -50,9 +50,13 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 #    history = models.OneToOneField(History, on_delete=models.CASCADE)
     liked_songs = models.ManyToManyField(Song, related_name='liked_songs')
-    #history = models.OnetoOneField(History, related_name='song_history')
+    history = models.ManyToManyField(Song, through='Time', related_name='history')
     def __str__(self):
         return self.user.username
+class Time(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
